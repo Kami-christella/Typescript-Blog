@@ -1,6 +1,6 @@
 
 import {SignIn,SignUp,Validateopt,ResetPassword,ForgotPassword,getAllusers,getUserById,Logout,updateUser,deleteUser,findUserByName,test } from "../repository/UserController";
-import { CreateBlog, updateBlog, getAllBlogs, deleteBlog} from "../repository/BlogController";
+import { CreateBlog, updateBlog, getAllBlogs, deleteBlog, getBlogById} from "../repository/BlogController";
 import {authenticateToken,authorize} from "../middleware/authenthicateToken"
 export const UserRouter=[
     {
@@ -75,5 +75,11 @@ export const UserRouter=[
         controller:deleteBlog,
         action:"deleteBlog",
          middlewares: [authenticateToken, authorize("admin")]
+    },
+     {
+        method:"get",
+        route:"/getBlogById/:id",
+        controller:getBlogById,
+        action:"GetBlogById"
     },
 ]
