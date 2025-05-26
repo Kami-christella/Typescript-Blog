@@ -1,5 +1,5 @@
 
-import {SignIn,SignUp,Validateopt,ResetPassword,ForgotPassword,getAllusers,Logout,updateUser,deleteUser,findUserByName,test } from "../repository/UserController";
+import {SignIn,SignUp,Validateopt,ResetPassword,ForgotPassword,getAllusers,getUserById,Logout,updateUser,deleteUser,findUserByName,test } from "../repository/UserController";
 import {authenticateToken,authorize} from "../middleware/authenthicateToken"
 export const UserRouter=[
     {
@@ -40,5 +40,12 @@ export const UserRouter=[
         controller:deleteUser,
         action:"deleteUser",
          middlewares: [authenticateToken, authorize("admin")]
+    },
+    {
+        method:"get",
+        route:"/getUserById/:id",
+        controller:getUserById,
+        action:"getUserById",
+         middlewares: [authenticateToken] // all logged-in user can view
     }
 ]

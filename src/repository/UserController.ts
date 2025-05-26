@@ -97,6 +97,13 @@ export const getAllusers = asyncWrapper(async (_req: Request, res: Response) => 
     res.status(200).json({ size: users.length, users });
 });
 
+export const getUserById=asyncWrapper(async (req: Request, res: Response, next: NextFunction) => {
+    const id = req.params.id;
+    const userRepo = AppDataSource.getRepository(User);
+    const user = await userRepo.findOneBy({ id });
+    if (!user) return next(new BadRequestError('User not found'));
+    res.status(200).json({ user }); 
+});
 export const Logout = asyncWrapper(async (_req: Request, res: Response) => {
     res.status(200).json({ message: 'Logout successful' }); // Token clearing depends on frontend/local storage
 });
