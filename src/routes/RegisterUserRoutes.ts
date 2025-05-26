@@ -1,6 +1,6 @@
 
 import {SignIn,SignUp,Validateopt,ResetPassword,ForgotPassword,getAllusers,getUserById,Logout,updateUser,deleteUser,findUserByName,test } from "../repository/UserController";
-import { CreateBlog } from "../repository/BlogController";
+import { CreateBlog, updateBlog} from "../repository/BlogController";
 import {authenticateToken,authorize} from "../middleware/authenthicateToken"
 export const UserRouter=[
     {
@@ -56,4 +56,11 @@ export const UserRouter=[
             action: "CreateBlog",
             middlewares: [authenticateToken, authorize("admin")], // only admin can create blog
         },
+        {
+            method:"put",
+            route:"/updateBlog/:id",
+            controller: updateBlog,
+            action:"UpdateBlog",
+             middlewares: [authenticateToken, authorize("admin")],
+        }
 ]

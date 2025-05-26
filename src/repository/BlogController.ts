@@ -46,15 +46,24 @@ export const CreateBlog = asyncWrapper(async (req: Request, res: Response, next:
     });
     // saving user in database
     const savedBlog = await blogRepo.save(newblog);
-    //sending email to user contain otp
-// await sendEmail({
-//   recipient: savedBlog.name,
-//   subject: 'Verify your Blog',
-//   body: `Your OTP is ${otp}`
-// });
    
 // generate token
  const token = jwt.sign({ id: savedBlog.id, name: savedBlog.name, description: savedBlog.description, status: savedBlog.status }, process.env.JWT_SECRET_KEY!, { expiresIn: '1h' });
 
     res.status(201).json({ message: 'Blog created successfully!', blog: savedBlog, token });
 });
+
+export const updateBlog = async (req: Request, res: Response, next: NextFunction) => {
+    const id = req.params.id;
+    const updatedData = req.body;
+
+    const blogRepo = AppDataSource.getRepository(Blog);
+    const blog = await blogRepo.findOneBy({ id });
+
+    if (!blog) return res.status(404).json({ message: 'Blog not found' });
+
+    const updatedblog = blogRepo.merge(blog, updatedData);
+    await blogRepo.save(updatedblog);
+
+    res.status(200).json({ message: 'User updated successfully', blog: updatedblog });
+};
