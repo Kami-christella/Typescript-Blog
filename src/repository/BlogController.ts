@@ -88,3 +88,11 @@ export const deleteBlog = async (req: Request, res: Response,next:NextFunction) 
         return next(err)
     }
 };
+
+export const getBlogById=asyncWrapper(async (req: Request, res: Response, next: NextFunction) => {
+    const id = req.params.id;
+    const blogRepo = AppDataSource.getRepository(Blog);
+    const blog = await blogRepo.findOneBy({ id });
+    if (!blog) return next(new BadRequestError('Blog not found'));
+    res.status(200).json({ blog }); 
+});
