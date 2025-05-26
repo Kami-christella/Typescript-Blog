@@ -26,7 +26,7 @@ private UserRepository=AppDataSource.getRepository(User)
       catch(error)
       {
         return {
-            message:error instanceof Error?error.message:"An error occured while saving the user"
+            message:error instanceof Error?error.message:"The user could not be created, the user already exists",
         };
       }
     }

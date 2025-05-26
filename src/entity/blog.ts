@@ -18,7 +18,7 @@ export class Blog {
   @Column()
   comments!: string;
 
-  @Column({ default: 'Active' })
+  @Column({ default: 'active' })
   status!: string;
 
   @Column()
