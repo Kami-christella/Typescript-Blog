@@ -16,7 +16,7 @@ import { Subject } from 'typeorm/persistence/Subject.js';
 dotenv.config();
 
 export const test = (req: Request, res: Response) => {
-    res.status(200).json({ message: 'Welcome to User Management ' });
+    res.status(200).json({ message: 'Welcome to Blog' });
 };
 
 export const SignUp = asyncWrapper(async (req: Request, res: Response, next: NextFunction) => {

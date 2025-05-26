@@ -4,8 +4,8 @@ import {
 } from 'typeorm';
 import { Token } from './Token';
 @Entity()
-@Unique(['email']) 
-export class User {
+@Unique(['name']) 
+export class Blog {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
@@ -13,13 +13,13 @@ export class User {
   name!: string;
 
   @Column()
-  email!: string;
+  description!: string;
 
   @Column()
-  password!: string;
+  comments!: string;
 
-  @Column({ default: 'user' })
-  role!: string;
+  @Column({ default: 'Active' })
+  status!: string;
 
   @Column()
   otp!: number;
