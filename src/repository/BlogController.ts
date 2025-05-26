@@ -67,3 +67,24 @@ export const updateBlog = async (req: Request, res: Response, next: NextFunction
 
     res.status(200).json({ message: 'User updated successfully', blog: updatedblog });
 };
+
+export const getAllBlogs = asyncWrapper(async (_req: Request, res: Response) => {
+    const blogs = await AppDataSource.getRepository(Blog).find();
+    res.status(200).json({ size: blogs.length, blogs });
+});
+
+export const deleteBlog = async (req: Request, res: Response,next:NextFunction) => {
+    try{
+    const id = req.params.id;
+    const blogRepo = AppDataSource.getRepository(Blog);
+    const user = await blogRepo.findOneBy({ id });
+
+    if (!user) return res.status(404).json({ message: 'Blog not found' });
+    await blogRepo.remove(user);
+
+    res.status(200).json({ message: 'Blog deleted successfully' });}
+    catch(err)
+    {
+        return next(err)
+    }
+};
