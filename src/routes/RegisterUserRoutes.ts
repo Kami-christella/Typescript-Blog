@@ -61,7 +61,7 @@ export const UserRouter=[
             route:"/updateBlog/:id",
             controller: updateBlog,
             action:"UpdateBlog",
-             middlewares: [authenticateToken, authorize("admin")],
+             middlewares: [authenticateToken, authorize("admin")],// only logged-in users can update their own blogs
         },
          {
         method:"get",
@@ -74,7 +74,7 @@ export const UserRouter=[
         route:"/deleteBlog/:id",
         controller:deleteBlog,
         action:"deleteBlog",
-         middlewares: [authenticateToken, authorize("admin")]
+         middlewares: [authenticateToken, authorize("admin")], // only logged-in users can delete their own blogs
     },
      {
         method:"get",
