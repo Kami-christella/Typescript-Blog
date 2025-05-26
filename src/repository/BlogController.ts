@@ -84,7 +84,7 @@ export const deleteBlog = async (req: Request, res: Response,next:NextFunction) 
 
     res.status(200).json({ message: 'Blog deleted successfully' });}
     catch(err)
-    {
+    { 
         return next(err)
     }
 };
