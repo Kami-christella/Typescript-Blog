@@ -22,8 +22,8 @@ export const UserRouter=[
         action:"AllUsers"
     },
     {
-   method:"post",
-   route:"/ValidateUser",
+   method:"get",
+   route:"/Validateopt/:token",
    controller:Validateopt,
    action:"FindUser"
     },
@@ -61,7 +61,7 @@ export const UserRouter=[
             route:"/updateBlog/:id",
             controller: updateBlog,
             action:"UpdateBlog",
-             middlewares: [authenticateToken, authorize("admin")],// only logged-in users can update their own blogs
+             middlewares: [authenticateToken, authorize("admin")],//  only admin can create blog
         },
          {
         method:"get",
@@ -74,7 +74,7 @@ export const UserRouter=[
         route:"/deleteBlog/:id",
         controller:deleteBlog,
         action:"deleteBlog",
-         middlewares: [authenticateToken, authorize("admin")], // only logged-in users can delete their own blogs
+         middlewares: [authenticateToken, authorize("admin")], 
     },
      {
         method:"get",

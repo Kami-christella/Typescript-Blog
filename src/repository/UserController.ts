@@ -46,36 +46,55 @@ export const SignUp = asyncWrapper(async (req: Request, res: Response, next: Nex
     });
     // saving user in database
     const savedUser = await userRepo.save(newUser);
-    //sending email to user contain otp
+  
+   
+    // if email sending fails, delete the user
+    if (!savedUser) return next(new BadRequestError('Failed to create user account'));
+// generate token
+ const token = jwt.sign({ id: savedUser.id, role: savedUser.role, email: savedUser.email, otp }, process.env.JWT_SECRET_KEY!, { expiresIn: '1h' });
+    const verificationLink = `http://localhost:4000/Validateopt/${token}`;  
+ //sending email to user contain otp
 await sendEmail({
   recipient: savedUser.email,
   subject: 'Verify your account',
-  body: `Your OTP is ${otp}`
+  body: `Your Verification Email is:  ${verificationLink}`
 });
-   
-// generate token
- const token = jwt.sign({ id: savedUser.id, role: savedUser.role, email: savedUser.email }, process.env.JWT_SECRET_KEY!, { expiresIn: '1h' });
-
     res.status(201).json({ message: 'User account created!', user: savedUser, token });
 });
 
 export const Validateopt = asyncWrapper(async (req: Request, res: Response, next: NextFunction) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) return next(new BadRequestError(errors.array()[0].msg));
+  const Verificationtoken = req.params.token;
 
-    const userRepo = AppDataSource.getRepository(User);
-    const user = await userRepo.findOneBy({ otp: req.body.otp });
+  let decoded;
+  try {
+    decoded = jwt.verify(Verificationtoken, process.env.JWT_SECRET_KEY!) as {
+      id: string;
+      email: string;
+      role: string;
+      otp: string;
+      iat: number;
+      exp: number;
+    };
+  } catch (err) {
+    return next(new UnauthorizedError('Invalid or expired token'));
+  }
 
-    if (!user) return next(new UnauthorizedError('Invalid OTP'));
-    if (user.otpExpires.getTime() < Date.now()) return next(new UnauthorizedError('OTP expired'));
+  const userRepo = AppDataSource.getRepository(User);
+  const user = await userRepo.findOneBy({ id: decoded.id });
 
-    user.verified = true;
-    await userRepo.save(user);
+  if (!user) return next(new UnauthorizedError('User not found'));
+  if (user.otpExpires.getTime() < Date.now()) return next(new UnauthorizedError('OTP expired'));
 
-    const token = jwt.sign({ email: user.email, role: user.role }, process.env.JWT_SECRET_KEY!, { expiresIn: '1h' });
+  user.verified = true;
+  await userRepo.save(user);
 
-    res.status(200).json({ message: 'User account verified!', user, token });
+  const token = jwt.sign({ email: user.email, role: user.role }, process.env.JWT_SECRET_KEY!, {
+    expiresIn: '1h',
+  });
+
+  res.status(200).json({ message: 'User account verified!', user, token });
 });
+
 
 export const SignIn = asyncWrapper(async (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req);
