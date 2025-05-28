@@ -25,7 +25,8 @@
     "nodemailer": "^7.0.3",
     "pg": "^8.16.0",
     "reflect-metadata": "^0.2.2",
-    "typeorm": "^0.3.24"
+    "typeorm": "^0.3.24",
+    "zod": "^3.25.32"
   },
   "devDependencies": {
     "@babel/core": "^7.27.1",
