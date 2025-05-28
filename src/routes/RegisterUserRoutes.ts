@@ -2,6 +2,12 @@
 import {SignIn,SignUp,Validateopt,ResetPassword,ForgotPassword,getAllusers,getUserById,Logout,updateUser,deleteUser,findUserByName,test } from "../repository/UserController";
 import { CreateBlog, updateBlog, getAllBlogs, deleteBlog, getBlogById} from "../repository/BlogController";
 import {authenticateToken,authorize} from "../middleware/authenthicateToken"
+import { 
+  getUserByIdSchema, 
+  updateUserSchema, 
+  deleteUserSchema, 
+  searchUsersSchema 
+} from '../schemas/user.schema';
 export const UserRouter=[
     {
         method:"post",
