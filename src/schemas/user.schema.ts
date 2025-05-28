@@ -48,7 +48,7 @@ export const searchUsersSchema = z.object({
     }),
 });
 
-export const deleteUserSchema = z.object({
+export const deleteUserSchema = z.object({ 
   params: idParamSchema,
 });
 
