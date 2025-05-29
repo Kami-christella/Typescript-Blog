@@ -3,16 +3,19 @@ import {SignIn,SignUp,Validateopt,ResetPassword,ForgotPassword,getAllusers,getUs
 import { CreateBlog, updateBlog, getAllBlogs, deleteBlog, getBlogById} from "../repository/BlogController";
 import {authenticateToken,authorize} from "../middleware/authenthicateToken"
 import { 
-  getUserByIdSchema, 
+  createUserSchema,
   updateUserSchema, 
+  getUserByIdSchema,
   deleteUserSchema, 
   searchUsersSchema 
 } from '../schemas/user.schema';
+import { validate } from '../middleware/validation.middleware';
 export const UserRouter=[
     {
         method:"post",
         route:"/signup",
         controller:SignUp,
+        middlewares: [validate(createUserSchema)], // validate user data before signup
         action:"SignUp"
     },
     {

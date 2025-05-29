@@ -1,26 +1,30 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from 'express';
+import { ValidationError } from '../utils/errors'; 
+import { AppError } from '../utils/errors';
 
-// Define a custom error type to capture 'status' and 'message' properties
-interface CustomError extends Error {
-  status?: number;
-}
-
-const errorHandler = (
-  err: CustomError,
+export const errorHandler = (
+  err: any,
   req: Request,
   res: Response,
   next: NextFunction
-): void => {
-  const errStatus = err.status || 500;
-  const errMessage = err.message || "Internal server error";
+) => {
+  const statusCode = err.statusCode || 500;
 
-  res.status(errStatus).json({
+  const response: any = {
     success: false,
-    status: errStatus,
-    message: errMessage,
-    // Include stack trace only in development environment
-    stack: process.env.NODE_ENV === "development" ? err.stack : {},
-  });
-};
+    status: statusCode,
+    message: err.message || 'Internal Server Error',
+  };
 
-export default errorHandler;
+  //  Include validation errors from Zod
+  if (err instanceof ValidationError) {
+    response.errors = err.errors; 
+  }
+
+  // Show stack only in development
+  if (process.env.NODE_ENV === 'development') {
+    response.stack = err.stack;
+  }
+
+  res.status(statusCode).json(response);
+};
