@@ -1,10 +1,11 @@
 // // src/app.ts
 // import "reflect-metadata";
 // import express, { Express, Request, Response, NextFunction } from "express";
+// import { errorHandler } from "./middleware/errorhandler";
 // import * as dotenv from "dotenv";
 // import { AppDataSource } from "./config/database";
-// //import { UserRouter } from "./routes/RegisterUserRoutes";
-//  import UserRouter  from "./routes/userRoutes";
+// import { UserRouter } from "./routes/RegisterUserRoutes";
+//  //import UserRouter  from "./routes/userRoutes";
 // import * as bodyParser from "body-parser";
 
 // dotenv.config();
@@ -16,7 +17,7 @@
 
 //     app.use(bodyParser.json());
 //     app.use(express.json());
-
+//   app.use(errorHandler);
 //     // Route setup
 //     UserRouter.forEach(route => {
 //       const method = route.method.toLowerCase();

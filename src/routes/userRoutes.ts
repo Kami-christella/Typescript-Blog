@@ -68,15 +68,19 @@ UserRouter.post('/signup', validate(createUserSchema), SignUp);
 UserRouter.post('/Validateopt/:token', Validateopt);
 
 //  Protected routes (with auth)
-UserRouter.use(authenticated);
+//UserRouter.use(authenticated);
 
-UserRouter.get('/getUserById/:id', validate(getUserByIdSchema), getUserById);
+UserRouter.get('/getUserById/:id', getUserById);
 
-UserRouter.get('/listAll', authorize('admin'), getAllusers);
+UserRouter.get('/listAll', getAllusers);
 
-UserRouter.put('/updateUser/:id', authorize('admin'), validate(updateUserSchema), updateUser);
+// UserRouter.put('/updateUser/:id', authorize('admin'), validate(updateUserSchema), updateUser);
+UserRouter.put('/updateUser/:id', validate(updateUserSchema), updateUser);
 
 UserRouter.delete('/deleteUser/:id', authorize('admin'), validate(deleteUserSchema), deleteUser);
+  
+UserRouter.post('/forgotpassword',ForgotPassword)
 
+UserRouter.post('/resetpassword/:token',ResetPassword)
 
 export default UserRouter;

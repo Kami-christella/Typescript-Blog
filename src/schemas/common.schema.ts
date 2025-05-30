@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const idParamSchema = z.object({
-  id: z.string().regex(/^\d+$/, "ID must be a valid number").transform(Number),
+ // id: z.string().regex(/^\d+$/, "ID must be a valid number").transform(Number),
 });
 
 export const paginationSchema = z.object({
