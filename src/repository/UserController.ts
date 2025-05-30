@@ -12,6 +12,7 @@ import { AppDataSource } from '../config/database';
 import { User } from '../entity/userEntity';
 import { Token } from '../entity/Token';
 import { Subject } from 'typeorm/persistence/Subject.js';
+import { AuthenticatedRequest } from '../middleware/auth';
 
 dotenv.config();
 
@@ -253,7 +254,7 @@ export const ResetPassword = asyncWrapper(async (req: Request, res: Response, ne
 //     res.status(200).json({ message: 'Password has been reset' });
 // });
 
-export const updateUser = async (req: Request, res: Response, next: NextFunction) => {
+export const updateUser = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     const id = req.params.id;
     const updatedData = req.body;
 

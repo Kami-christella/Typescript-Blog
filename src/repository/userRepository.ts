@@ -1,6 +1,6 @@
 import { title } from "process";
 import { AppDataSource } from "../config/database";
-import { User } from "../entity/user";
+import { User } from "../entity/userEntity";
 import {Response,Request,NextFunction} from "express";
 
 export class UserController{

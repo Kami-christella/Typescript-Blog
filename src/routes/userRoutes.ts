@@ -53,6 +53,7 @@ import {
 import { authenticated } from '../middleware/auth.middleware';
 import { authorize } from "../middleware/authenthicateToken";
 import { validate } from '../middleware/validation.middleware';
+import {authorizeRole} from '../middleware/autharization';
 import {
   getUserByIdSchema,
   updateUserSchema,
@@ -75,10 +76,18 @@ UserRouter.get('/getUserById/:id', getUserById);
 UserRouter.get('/listAll', getAllusers);
 
 // UserRouter.put('/updateUser/:id', authorize('admin'), validate(updateUserSchema), updateUser);
-UserRouter.put('/updateUser/:id', validate(updateUserSchema), updateUser);
+//UserRouter.put('/updateUser/:id', updateUser,  validate(createUserSchema),authorize('admin'));
 
-UserRouter.delete('/deleteUser/:id', authorize('admin'), validate(deleteUserSchema), deleteUser);
-  
+UserRouter.put('/updateUser/:id', 
+        // authorizeRole("admin"),
+  validate(createUserSchema),  
+  updateUser                  
+);
+
+//Router.get("/profile",authentification as any,authorizeRole("admin"),AuthController.getProfile as any);
+
+UserRouter.delete('/deleteUser/:id', authorizeRole('admin'), validate(deleteUserSchema), deleteUser);
+
 UserRouter.post('/forgotpassword',ForgotPassword)
 
 UserRouter.post('/resetpassword/:token',ResetPassword)
