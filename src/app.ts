@@ -2,6 +2,9 @@
 import "reflect-metadata";
 import express, { Express, Request, Response, NextFunction } from "express";
 import { errorHandler } from "./middleware/errorhandler";
+//swagger imports
+import swaggerUi from 'swagger-ui-express';
+import swaggerDocument from './swagger-output.json';
 
 import * as dotenv from "dotenv";
 import { AppDataSource } from "./config/database";
@@ -19,7 +22,9 @@ AppDataSource.initialize()
 
     app.use(bodyParser.json());
     app.use(express.json());
-     
+     // Serve Swagger documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
     // Route setup
     UserRouter.forEach(route => {
       const method = route.method.toLowerCase();
