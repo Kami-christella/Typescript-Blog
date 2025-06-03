@@ -10,6 +10,7 @@ import {
   searchUsersSchema 
 } from '../schemas/user.schema';
 import { validate } from '../middleware/validation.middleware';
+
 export const UserRouter=[
     {
         method:"post",
